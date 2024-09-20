@@ -79,6 +79,13 @@ class NewPageTest(TestCase):
             'title': 'the title',
             'description': 'the description'
         })
-
         self.assertTrue(form.is_valid())
-        
+    
+    def test_new_page_form_rendering(self):
+        response = self.client.get('/new/')
+        print('test_new_page_form_rendering', f'{response = }')
+
+        self.assertContains(response, '<form')
+        self.assertContains(response, 'csrfmiddlewaretoken')
+        self.assertContains(response, '<label for')
+    

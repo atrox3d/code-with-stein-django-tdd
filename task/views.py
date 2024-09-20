@@ -1,6 +1,8 @@
 from django.shortcuts import render
 
 from .models import Task
+from task.forms import NewTaskForm
+
 # Create your views here.
 
 BORDER_WIDTH = 30
@@ -37,6 +39,9 @@ def detail(request, id):
     )
 
 def new(request):
+    form = NewTaskForm()
     return render(
-        request, 'task/new.html'
+        request, 
+        'task/new.html',
+        {'form': form}
     )
