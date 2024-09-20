@@ -28,7 +28,6 @@ class IndexPageTest(TestCase):
         self.assertEqual(response.status_code, 200)
     
     def test_index_page_has_tasks(self):
-
         response = self.client.get('/')
         print('test_index_page_has_tasks', f'{response = }')
 
@@ -37,7 +36,12 @@ class IndexPageTest(TestCase):
 
 class DetailPageTest(TestCase):
     def setUp(self) -> None:
-        self.task = Task.objects.create(title='First Task')
+        self.task = Task.objects.create(
+            title='First Task', description='the description'
+        )
+        self.task2 = Task.objects.create(
+            title='Second Task', description='second description'
+        )
     
     def test_detail_page_returns_correct_response(self):
         response = self.client.get(f'/{self.task.id}/')
@@ -45,3 +49,13 @@ class DetailPageTest(TestCase):
 
         self.assertTemplateUsed(response, 'task/detail.html')
         self.assertEqual(response.status_code, 200)
+
+    def test_detail_page_has_correct_content(self):
+        response = self.client.get(f'/{self.task.id}/')
+        print('test_detail_page_has_correct_content', f'{response = }')
+
+        self.assertContains(response, self.task.title)
+        self.assertContains(response, self.task.description)
+        self.assertNotContains(response, self.task2.title)
+        self.assertNotContains(response, self.task2.description)
+
