@@ -7,11 +7,22 @@ BORDER_WIDTH = 30
 BORDER_CHAR = '/ '
 BORDER = BORDER_CHAR * BORDER_WIDTH
 
+# def bordered(fn):
+#     def wrapped(*args, **kwargs):
+#         print(BORDER)
+#         res =  fn(*args, **kwargs)
+#         print(BORDER)
+#         return res
+#     return wrapped
+
+def bordered(*args, border=BORDER, **kwargs):
+    print(BORDER)
+    print(*args, **kwargs)
+    print(BORDER)
+
 def index(request):
     tasks = Task.objects.all()
-    print(BORDER)
-    print(f'{tasks = }')
-    print(BORDER)
+    bordered(f'{tasks = }')
 
     return render(
         request, 'task/index.html', {'tasks': tasks}
@@ -19,10 +30,13 @@ def index(request):
 
 def detail(request, id):
     task = Task.objects.get(pk=id)
-    print(BORDER)
-    print(f'{task = }')
-    print(BORDER)
+    bordered(f'{task = }')
 
     return render(
         request, 'task/detail.html', {'task': task}
+    )
+
+def new(request):
+    return render(
+        request, 'task/new.html'
     )

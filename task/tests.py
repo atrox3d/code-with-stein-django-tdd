@@ -3,7 +3,7 @@ from django.test import TestCase
 # Create your tests here.
 
 from .models import Task
-
+from .forms import NewTaskForm
 
 class TaskModelTest(TestCase):
 
@@ -59,3 +59,26 @@ class DetailPageTest(TestCase):
         self.assertNotContains(response, self.task2.title)
         self.assertNotContains(response, self.task2.description)
 
+class NewPageTest(TestCase):
+    # def setUp(self) -> None:
+        # self.form = NewTaskForm
+
+    def test_new_page_returns_correct_response(self):
+        response = self.client.get(f'/new/')
+        print('test_new_page_returns_correct_response', f'{response = }')
+
+        self.assertTemplateUsed(response, 'task/new.html')
+        self.assertEqual(response.status_code, 200)
+
+    def test_form_can_be_valid(self):
+        # self.assertTrue(issubclass(self.form, NewTaskForm))
+        self.assertTrue('title' in NewTaskForm.Meta.fields)
+        self.assertTrue('description' in NewTaskForm.Meta.fields)
+
+        form = NewTaskForm({
+            'title': 'the title',
+            'description': 'the description'
+        })
+
+        self.assertTrue(form.is_valid())
+        
