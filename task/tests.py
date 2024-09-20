@@ -12,3 +12,10 @@ class TaskModelTest(TestCase):
 
         self.assertEqual(tasks, 0)
     
+    def test_model_has_string_representation(self):
+        task = Task.objects.create(
+            title='First Task',
+            # description=
+        )
+        self.assertEqual(str(task), task.title)
+    
