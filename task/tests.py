@@ -18,4 +18,11 @@ class TaskModelTest(TestCase):
             # description=
         )
         self.assertEqual(str(task), task.title)
-    
+
+class IndexPageTest(TestCase):
+    def test_index_page_returns_correct_response(self):
+        response = self.client.get('/')
+        print(f'{response = }')
+
+        self.assertTemplateUsed(response, 'task/index.html')
+        self.assertEqual(response.status_code, 200)
